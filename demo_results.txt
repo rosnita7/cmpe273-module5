@@ -1,0 +1,139 @@
+
+======================================================================
+DEMO 1: COMPETING CONSUMERS (Load Sharing Across Workers)
+======================================================================
+[Step 1] Starting Worker-1 and Worker-2...
+[Step 2] Publishing 8 order messages...
+Connecting to RabbitMQ at localhost:5672...
+Connected. Target queue: 'order_queue' (durable=True)
+
+Publishing 8 order messages...
+[2026-10-26 21:47:00] [PRODUCER] Published -> event_id=evt-1001, order_id=ord-5001, item_id=item-laptop-m3, quantity=1
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1002, order_id=ord-5002, item_id=item-keyboard-pro, quantity=2
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1003, order_id=ord-5003, item_id=item-wireless-mouse, quantity=1
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1004, order_id=ord-5004, item_id=item-4k-monitor, quantity=1
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1005, order_id=ord-5005, item_id=item-usb-c-dock, quantity=3
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1006, order_id=ord-5006, item_id=item-noise-cancelling-headphones, quantity=1
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1007, order_id=ord-5007, item_id=item-laptop-m3, quantity=1
+[2026-10-26 21:47:01] [PRODUCER] Published -> event_id=evt-1008, order_id=ord-5008, item_id=item-keyboard-pro, quantity=2
+
+Successfully published 8 orders.
+
+[Step 3] Waiting for workers to process all orders...
+
+--- Worker-1 Output ---
+[Worker-1] Connecting to RabbitMQ at localhost:5672...
+[Worker-1] Ready and listening on queue 'order_queue' (prefetch_count=1, delay=0.5s, auto_ack=False)...
+[2026-10-26 21:47:01] [Worker-1] [RECEIVED] event_id=evt-1002, order_id=ord-5002, item=item-keyboard-pro, qty=2 [DeliveryTag=1]
+[2026-10-26 21:47:01] [Worker-1] [PROCESSING] Executing business logic for order ord-5002... (simulating 0.5s work)
+[2026-10-26 21:47:01] [Worker-1] [ACK SENT] Finished order ord-5002 (event_id=evt-1002). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:01] [Worker-1] [RECEIVED] event_id=evt-1004, order_id=ord-5004, item=item-4k-monitor, qty=1 [DeliveryTag=2]
+[2026-10-26 21:47:01] [Worker-1] [PROCESSING] Executing business logic for order ord-5004... (simulating 0.5s work)
+[2026-10-26 21:47:02] [Worker-1] [ACK SENT] Finished order ord-5004 (event_id=evt-1004). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:02] [Worker-1] [RECEIVED] event_id=evt-1006, order_id=ord-5006, item=item-noise-cancelling-headphones, qty=1 [DeliveryTag=3]
+[2026-10-26 21:47:02] [Worker-1] [PROCESSING] Executing business logic for order ord-5006... (simulating 0.5s work)
+[2026-10-26 21:47:02] [Worker-1] [ACK SENT] Finished order ord-5006 (event_id=evt-1006). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:02] [Worker-1] [RECEIVED] event_id=evt-1008, order_id=ord-5008, item=item-keyboard-pro, qty=2 [DeliveryTag=4]
+[2026-10-26 21:47:02] [Worker-1] [PROCESSING] Executing business logic for order ord-5008... (simulating 0.5s work)
+[2026-10-26 21:47:03] [Worker-1] [ACK SENT] Finished order ord-5008 (event_id=evt-1008). ACK sent to RabbitMQ.
+
+--- Worker-2 Output ---
+[Worker-2] Connecting to RabbitMQ at localhost:5672...
+[Worker-2] Ready and listening on queue 'order_queue' (prefetch_count=1, delay=0.5s, auto_ack=False)...
+[2026-10-26 21:47:00] [Worker-2] [RECEIVED] event_id=evt-1001, order_id=ord-5001, item=item-laptop-m3, qty=1 [DeliveryTag=1]
+[2026-10-26 21:47:00] [Worker-2] [PROCESSING] Executing business logic for order ord-5001... (simulating 0.5s work)
+[2026-10-26 21:47:01] [Worker-2] [ACK SENT] Finished order ord-5001 (event_id=evt-1001). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:01] [Worker-2] [RECEIVED] event_id=evt-1003, order_id=ord-5003, item=item-wireless-mouse, qty=1 [DeliveryTag=2]
+[2026-10-26 21:47:01] [Worker-2] [PROCESSING] Executing business logic for order ord-5003... (simulating 0.5s work)
+[2026-10-26 21:47:01] [Worker-2] [ACK SENT] Finished order ord-5003 (event_id=evt-1003). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:01] [Worker-2] [RECEIVED] event_id=evt-1005, order_id=ord-5005, item=item-usb-c-dock, qty=3 [DeliveryTag=3]
+[2026-10-26 21:47:01] [Worker-2] [PROCESSING] Executing business logic for order ord-5005... (simulating 0.5s work)
+[2026-10-26 21:47:02] [Worker-2] [ACK SENT] Finished order ord-5005 (event_id=evt-1005). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:02] [Worker-2] [RECEIVED] event_id=evt-1007, order_id=ord-5007, item=item-laptop-m3, qty=1 [DeliveryTag=4]
+[2026-10-26 21:47:02] [Worker-2] [PROCESSING] Executing business logic for order ord-5007... (simulating 0.5s work)
+[2026-10-26 21:47:02] [Worker-2] [ACK SENT] Finished order ord-5007 (event_id=evt-1007). ACK sent to RabbitMQ.
+
+[Result] Orders were distributed between Worker-1 and Worker-2.
+Each order was consumed and acknowledged by exactly one worker.
+
+======================================================================
+DEMO 2: FAILURE AND REDELIVERY (Crash Before ACK -> Redelivery)
+======================================================================
+[Step 1] Starting Worker-1 configured to CRASH on 'evt-fail-701' before ACK...
+[Step 2] Starting Worker-2 (normal standby worker)...
+
+[Step 3] Publishing message with event_id='evt-fail-701'...
+Connecting to RabbitMQ at localhost:5672...
+Connected. Target queue: 'order_queue' (durable=True)
+
+[2026-10-26 21:47:08] [PRODUCER] Published -> event_id=evt-fail-701, order_id=ord-9901, item_id=item-mechanical-keyboard, quantity=1
+
+[Step 4] Monitoring Worker-1 crash and RabbitMQ redelivery to Worker-2...
+Worker-1 process exited with return code: 1 (expected crash)
+
+[Step 5] Publishing follow-up normal message 'evt-norm-702' to prove Worker-2 is still healthy...
+Connecting to RabbitMQ at localhost:5672...
+Connected. Target queue: 'order_queue' (durable=True)
+
+[2026-10-26 21:47:11] [PRODUCER] Published -> event_id=evt-norm-702, order_id=ord-9902, item_id=item-ergonomic-mouse, quantity=2
+
+--- Worker-1 (Crashing Worker) Log ---
+[Worker-1] Connecting to RabbitMQ at localhost:5672...
+[Worker-1] Ready and listening on queue 'order_queue' (prefetch_count=1, delay=0.5s, auto_ack=False)...
+[Worker-1] [SIMULATION ACTIVE] Will CRASH without ACK if event_id='evt-fail-701' is received!
+[2026-10-26 21:47:08] [Worker-1] [RECEIVED] event_id=evt-fail-701, order_id=ord-9901, item=item-mechanical-keyboard, qty=1 [DeliveryTag=1]
+[2026-10-26 21:47:08] [Worker-1] [SIMULATED CRASH] Crash triggered on event_id=evt-fail-701! Stopping process immediately BEFORE sending ACK.
+
+--- Worker-2 (Surviving Worker) Log ---
+[Worker-2] Connecting to RabbitMQ at localhost:5672...
+[Worker-2] Ready and listening on queue 'order_queue' (prefetch_count=1, delay=0.5s, auto_ack=False)...
+[2026-10-26 21:47:08] [Worker-2] [RECEIVED] (REDELIVERED) event_id=evt-fail-701, order_id=ord-9901, item=item-mechanical-keyboard, qty=1 [DeliveryTag=1]
+[2026-10-26 21:47:08] [Worker-2] [PROCESSING] Executing business logic for order ord-9901... (simulating 0.5s work)
+[2026-10-26 21:47:09] [Worker-2] [ACK SENT] Finished order ord-9901 (event_id=evt-fail-701). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:11] [Worker-2] [RECEIVED] event_id=evt-norm-702, order_id=ord-9902, item=item-ergonomic-mouse, qty=2 [DeliveryTag=2]
+[2026-10-26 21:47:11] [Worker-2] [PROCESSING] Executing business logic for order ord-9902... (simulating 0.5s work)
+[2026-10-26 21:47:12] [Worker-2] [ACK SENT] Finished order ord-9902 (event_id=evt-norm-702). ACK sent to RabbitMQ.
+
+[Result] Worker-1 crashed before ACK. RabbitMQ detected unacknowledged message and redelivered it.
+Worker-2 received the redelivered message, successfully processed it, and ACKed it.
+
+======================================================================
+DEMO 3: DUPLICATE HANDLING (Idempotent Processing)
+======================================================================
+[Step 1] Starting Worker-1...
+
+[Step 2] Publishing first instance of event_id='evt-dup-888'...
+Connecting to RabbitMQ at localhost:5672...
+Connected. Target queue: 'order_queue' (durable=True)
+
+[2026-10-26 21:47:15] [PRODUCER] Published -> event_id=evt-dup-888, order_id=ord-3001, item_id=item-usb-c-hub, quantity=1
+
+[Step 3] Publishing DUPLICATE message with identical event_id='evt-dup-888'...
+Connecting to RabbitMQ at localhost:5672...
+Connected. Target queue: 'order_queue' (durable=True)
+
+[2026-10-26 21:47:17] [PRODUCER] Published -> event_id=evt-dup-888, order_id=ord-3001, item_id=item-usb-c-hub, quantity=1
+
+--- Worker-1 Log ---
+[Worker-1] Connecting to RabbitMQ at localhost:5672...
+[Worker-1] Ready and listening on queue 'order_queue' (prefetch_count=1, delay=0.5s, auto_ack=False)...
+[2026-10-26 21:47:15] [Worker-1] [RECEIVED] event_id=evt-dup-888, order_id=ord-3001, item=item-usb-c-hub, qty=1 [DeliveryTag=1]
+[2026-10-26 21:47:15] [Worker-1] [PROCESSING] Executing business logic for order ord-3001... (simulating 0.5s work)
+[2026-10-26 21:47:15] [Worker-1] [ACK SENT] Finished order ord-3001 (event_id=evt-dup-888). ACK sent to RabbitMQ.
+
+[2026-10-26 21:47:17] [Worker-1] [RECEIVED] event_id=evt-dup-888, order_id=ord-3001, item=item-usb-c-hub, qty=1 [DeliveryTag=2]
+[2026-10-26 21:47:17] [Worker-1] [DUPLICATE DETECTED] event_id=evt-dup-888 has ALREADY been processed! Skipping business action.
+[2026-10-26 21:47:17] [Worker-1] [ACK SENT] Acknowledged duplicate event_id=evt-dup-888 (no-op).
+
+--- Deduplication Store Contents ---
+evt-dup-888
+
+[Result] The first message was processed and recorded in deduplication store.
+The second message was detected as a duplicate, logged, skipped, and acknowledged.

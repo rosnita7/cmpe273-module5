@@ -1,0 +1,19 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS system files
+.DS_Store
+
+# Deduplication state file (created at runtime)
+processed_events.txt
+processed_events_*.txt
+
+# Logs
+*.log
